@@ -24,19 +24,19 @@
     <div class="gameArea">
       <table>
         <tr>
-          <td>x</td>
-          <td class="vert">o</td>
-          <td>x</td>
+          <td id="one"></td>
+          <td id="two" class="vert"></td>
+          <td id="three"></td>
         </tr>
         <tr>
-          <td class="hori">x</td>
-          <td class="vert hori">o</td>
-          <td class="hori">o</td>
+          <td id="four" class="hori"></td>
+          <td id="five" class="vert hori"></td>
+          <td id="six" class="hori"></td>
         </tr>
         <tr>
-          <td>o</td>
-          <td class="vert">x</td>
-          <td>x</td>
+          <td id="seven"></td>
+          <td id="eight" class="vert"></td>
+          <td id="nine"></td>
         </tr>
       </table>
     </div>
@@ -46,5 +46,32 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      $(document).ready(function() {
+        var socket = io();
+
+        $("td").click(function() {
+            if($(this).html() == ""){
+              var clickedId = $(this).attr("id");
+              socket.emit("user select", clickedId);
+            }
+        });
+
+        socket.on("mark data", (data) => {
+          if(data.markStatus == true){
+            // display the cross
+            $("#" + data.markId).html('x');
+          }
+          else{
+            // display the circle
+            $("#" + data.markId).html('o');
+            $("#" + data.markId).css("color", "#A9A9A9");
+          }
+        });
+
+      });
+    </script>
   </body>
 </html>
