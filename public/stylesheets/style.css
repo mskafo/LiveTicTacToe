@@ -16,10 +16,13 @@ td {
   width: 200px;
   height: 200px;
   font-size: 100px;
+  transition: 0.2s;
 }
 
 td:hover{
+  /*cursor: no-drop;*/
   cursor: pointer;
+  background-color:rgba(0, 0, 0, 0.05);
 }
 
 table {

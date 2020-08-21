@@ -1,0 +1,1 @@
+usa i nickname per i socket per stabilire di chi è il turno

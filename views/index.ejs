@@ -55,11 +55,16 @@
         $("td").click(function() {
             if($(this).html() == ""){
               var clickedId = $(this).attr("id");
+              //$("*").css("pointer-events","none");
               socket.emit("user select", clickedId);
             }
         });
 
         socket.on("mark data", (data) => {
+          $("#" + data.markId).hover(function() {
+              $(this).css("cursor", "no-drop");
+          });
+
           if(data.markStatus == true){
             // display the cross
             $("#" + data.markId).html('x');
@@ -69,6 +74,15 @@
             $("#" + data.markId).html('o');
             $("#" + data.markId).css("color", "#A9A9A9");
           }
+        });
+
+        socket.on("win event", (winPattern) => {
+          $("*").css("pointer-events","none");
+          
+          winPattern.forEach((winId) => {
+            $("td").css("transition", "1s");
+            $("#" + winId).css("background-color", "#fffecf");
+          });
         });
 
       });

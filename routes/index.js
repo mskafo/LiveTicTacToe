@@ -21,8 +21,7 @@ module.exports = function(io) {
   ]
 
   let containsAll = (arr, target) => target.every(v => arr.includes(v));
-  
-  
+
 
   router.get('/', function(req, res, next) {
     res.render('index', { title: 'LiveTicTacToe' });
@@ -31,6 +30,11 @@ module.exports = function(io) {
   
   io.on('connection', (socket) => {
     socket.join("room1");
+
+    socket.on('disconnect', () => {
+      crossMarked = [];
+      circleMarked = [];
+    });
 
     // data is the id of clicked square
     socket.on('user select', (data) => {
@@ -45,10 +49,20 @@ module.exports = function(io) {
 
       winPatterns.forEach((winPattern) => {
         if(containsAll(crossMarked, winPattern)){
-          console.log("Cross player has won");
+          //console.log("Cross player has won");
+
+          io.sockets.in("room1").emit("win event", winPattern);
+          mark = !mark;
+          crossMarked = [];
+          circleMarked = [];
         }
         else if(containsAll(circleMarked, winPattern)){
-          console.log("Circle player has won");
+          //console.log("Circle player has won");
+
+          io.sockets.in("room1").emit("win event", winPattern);
+          mark = !mark;
+          crossMarked = [];
+          circleMarked = [];
         }
       });
 
